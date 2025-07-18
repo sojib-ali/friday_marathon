@@ -31,15 +31,10 @@ export const signupSchema = z
       .regex(/[^a-zA-Z0-9]/, "Password must contain at least one special character"),
 
     confirmPassword: z.string(),
-    dob: z
-  .string()
-  .refine(
-    (val) => {
-      const date = new Date(val);
-      return !isNaN(date.getTime()) && date < new Date();
-    },
-    { message: "Please enter a valid past date" }
-  ),
+    dobMonth: z.string().nonempty("Month is required"),
+    dobDay: z.string().nonempty("Day is required"),
+    dobYear: z.string().nonempty("Year is required"),
+    gender: z.string().nonempty("Gender is required"),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",

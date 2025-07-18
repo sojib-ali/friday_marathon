@@ -113,6 +113,49 @@
   text-align: center;
 }
 
+/* Date of Birth group container */
+.signup-form__dob-group {
+  display: flex;
+  gap: 12px;
+}
+
+/* Date of Birth selects (Month, Day, Year) */
+.signup-form__dob-group .signup-form__select {
+  flex: 1;               /* Each select takes equal width */
+  padding: 10px 14px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: white;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.signup-form__dob-group .signup-form__select:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+/* Gender select - reuse base select styles with a little tweak for spacing */
+.signup-form__group > select.signup-form__select {
+  width: 100%;
+  padding: 10px 14px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: white;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.signup-form__group > select.signup-form__select:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+
 /* Responsive */
 @media (max-width: 480px) {
   .signup-form {

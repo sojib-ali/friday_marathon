@@ -1,8 +1,8 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signupSchema } from "../Schema/signupSchema";
-import { GoEye } from "react-icons/go";
-import { GoEyeClosed } from "react-icons/go";
+import { GoEye, GoEyeClosed } from "react-icons/go";
+import { years, months, getDaysInMonth } from "../../utills/dobUtils";
 
 import "./signup.css";
 import { useState } from "react";
@@ -16,19 +16,24 @@ export const SignUp = () => {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm({ resolver: zodResolver(signupSchema), mode: "all" });
 
   const onSubmit = (data) => {
     console.log("Form data: ", data);
-
     alert("account created");
   };
+
+  const selectedMonth = watch("dobMonth");
+  const selectedYear = watch("dobYear");
 
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)} className="signup-form">
         <h3 className="signup-form__title">Sign up </h3>
+
+        {/* First Name */}
         <div className="signup-form__group">
           <label className="signup-form__label" htmlFor="firstName">
             First Name
@@ -40,9 +45,11 @@ export const SignUp = () => {
             {...register("firstName")}
           />
           {errors.firstName && (
-            <p className="error"> {errors.firstName.message} </p>
+            <p className="error">{errors.firstName.message}</p>
           )}
         </div>
+
+        {/* Last Name */}
         <div className="signup-form__group">
           <label className="signup-form__label" htmlFor="lastName">
             Last Name
@@ -54,9 +61,11 @@ export const SignUp = () => {
             {...register("lastName")}
           />
           {errors.lastName && (
-            <p className="error"> {errors.lastName.message} </p>
+            <p className="error">{errors.lastName.message}</p>
           )}
         </div>
+
+        {/* Username */}
         <div className="signup-form__group">
           <label className="signup-form__label" htmlFor="username">
             Username
@@ -68,9 +77,11 @@ export const SignUp = () => {
             {...register("username")}
           />
           {errors.username && (
-            <p className="error"> {errors.username.message} </p>
+            <p className="error">{errors.username.message}</p>
           )}
         </div>
+
+        {/* Email */}
         <div className="signup-form__group">
           <label className="signup-form__label" htmlFor="email">
             Email
@@ -81,44 +92,96 @@ export const SignUp = () => {
             type="email"
             {...register("email")}
           />
-          {errors.email && <p className="error"> {errors.email.message} </p>}
+          {errors.email && <p className="error">{errors.email.message}</p>}
         </div>
 
+        {/* DOB */}
         <div className="signup-form__group">
           <label className="signup-form__label" htmlFor="dob">
-            {" "}
-            Date of Birth{" "}
+            Date of Birth
           </label>
-          <input
-            type="date"
-            id="dob"
-            className="signup-form__input"
-            {...register("dob")}
-          />
-          {errors.dob && <p className="error"> {errors.dob.message} </p>}
+          <div className="signup-form__dob-group">
+            {/* Month */}
+            <select
+              className="signup-form__select"
+              defaultValue=""
+              {...register("dobMonth")}
+            >
+              <option value="" disabled>
+                Month
+              </option>
+              {months.map((month) => (
+                <option key={month.value} value={month.value}>
+                  {month.name}
+                </option>
+              ))}
+            </select>
+
+            {/* Day */}
+            <select
+              className="signup-form__select"
+              defaultValue=""
+              {...register("dobDay")}
+            >
+              <option value="" disabled>
+                Day
+              </option>
+              {Array.from(
+                {
+                  length: getDaysInMonth(selectedMonth, selectedYear),
+                },
+                (_, i) => i + 1
+              ).map((day) => (
+                <option key={day} value={day}>
+                  {day}
+                </option>
+              ))}
+            </select>
+
+            {/* Year */}
+            <select
+              className="signup-form__select"
+              defaultValue=""
+              {...register("dobYear")}
+            >
+              <option value="" disabled>
+                Year
+              </option>
+              {years.map((year) => (
+                <option key={year} value={year}>
+                  {year}
+                </option>
+              ))}
+            </select>
+          </div>
+          {(errors.dobMonth || errors.dobDay || errors.dobYear) && (
+            <p className="error">
+              {errors.dobMonth?.message ||
+                errors.dobDay?.message ||
+                errors.dobYear?.message}
+            </p>
+          )}
         </div>
 
+        {/* Gender */}
         <div className="signup-form__group">
-          <label className="signup-form__label" htmlFor="gender">
-            gender
-          </label>
+          <label className="signup-form__label">Gender</label>
           <select
-            name=""
-            id="gender"
-            className="signup-form__input"
+            className="signup-form__select"
             defaultValue=""
             {...register("gender")}
           >
             <option value="" disabled>
-              Select your gender
+              Select Gender
             </option>
             <option value="male">Male</option>
             <option value="female">Female</option>
             <option value="other">Other</option>
           </select>
-          {errors.gender && <p className="error"> {errors.gender.message} </p>}
+          {errors.gender && <p className="error">{errors.gender.message}</p>}
         </div>
 
+        {/* Password */}
         <div className="signup-form__group">
           <label className="signup-form__label" htmlFor="password">
             Password
@@ -139,19 +202,19 @@ export const SignUp = () => {
                 }))
               }
             >
-              {showPassword ? <GoEye /> : <GoEyeClosed />}
+              {showPassword.showJustPassword ? <GoEyeClosed /> : <GoEye />}
             </span>
           </div>
-
           {errors.password && (
-            <p className="error"> {errors.password.message} </p>
+            <p className="error">{errors.password.message}</p>
           )}
         </div>
+
+        {/* Confirm Password */}
         <div className="signup-form__group">
           <label className="signup-form__label" htmlFor="confirmPassword">
             Confirm Password
           </label>
-
           <div className="signup-form__password-wrapper">
             <input
               className="signup-form__input"
@@ -168,14 +231,15 @@ export const SignUp = () => {
                 }))
               }
             >
-              {showPassword ? <GoEye /> : <GoEyeClosed />}
+              {showPassword.showConfirmPassword ? <GoEyeClosed /> : <GoEye />}
             </span>
           </div>
           {errors.confirmPassword && (
-            <p className="error"> {errors.confirmPassword.message} </p>
+            <p className="error">{errors.confirmPassword.message}</p>
           )}
         </div>
 
+        {/* Submit */}
         <div className="signup-form__actions">
           <button
             type="submit"
