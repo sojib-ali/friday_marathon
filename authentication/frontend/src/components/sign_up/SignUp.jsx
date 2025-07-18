@@ -3,6 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { signupSchema } from "../Schema/signupSchema";
 import { GoEye, GoEyeClosed } from "react-icons/go";
 import { years, months, getDaysInMonth } from "../../utills/dobUtils";
+import { Input } from "./Input";
 
 import "./signup.css";
 import { useState } from "react";
@@ -34,36 +35,20 @@ export const SignUp = () => {
         <h3 className="signup-form__title">Sign up </h3>
 
         {/* First Name */}
-        <div className="signup-form__group">
-          <label className="signup-form__label" htmlFor="firstName">
-            First Name
-          </label>
-          <input
-            className="signup-form__input"
-            id="firstName"
-            type="text"
-            {...register("firstName")}
-          />
-          {errors.firstName && (
-            <p className="error">{errors.firstName.message}</p>
-          )}
-        </div>
+        <Input
+          label="first Name"
+          id="firstName"
+          register={register("firstName")}
+          error={errors.firstName}
+        />
 
         {/* Last Name */}
-        <div className="signup-form__group">
-          <label className="signup-form__label" htmlFor="lastName">
-            Last Name
-          </label>
-          <input
-            className="signup-form__input"
-            id="lastName"
-            type="text"
-            {...register("lastName")}
-          />
-          {errors.lastName && (
-            <p className="error">{errors.lastName.message}</p>
-          )}
-        </div>
+        <Input
+          label="Last Name"
+          id="lastName"
+          register={register("lastName")}
+          error={errors.lastName}
+        />
 
         {/* Username */}
         <div className="signup-form__group">
