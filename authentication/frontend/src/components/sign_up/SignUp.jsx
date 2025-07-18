@@ -83,6 +83,42 @@ export const SignUp = () => {
           />
           {errors.email && <p className="error"> {errors.email.message} </p>}
         </div>
+
+        <div className="signup-form__group">
+          <label className="signup-form__label" htmlFor="dob">
+            {" "}
+            Date of Birth{" "}
+          </label>
+          <input
+            type="date"
+            id="dob"
+            className="signup-form__input"
+            {...register("dob")}
+          />
+          {errors.dob && <p className="error"> {errors.dob.message} </p>}
+        </div>
+
+        <div className="signup-form__group">
+          <label className="signup-form__label" htmlFor="gender">
+            gender
+          </label>
+          <select
+            name=""
+            id="gender"
+            className="signup-form__input"
+            defaultValue=""
+            {...register("gender")}
+          >
+            <option value="" disabled>
+              Select your gender
+            </option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+          </select>
+          {errors.gender && <p className="error"> {errors.gender.message} </p>}
+        </div>
+
         <div className="signup-form__group">
           <label className="signup-form__label" htmlFor="password">
             Password
